@@ -79,7 +79,7 @@ const series = [
 
 export default function Dashboard() {
   const { data, isLoading, error} = useQuery('players', async () => {
-    const response = await fetch('http://localhost:3000/api/players')
+    const response = await fetch('https://game-asgp.vercel.app/api/players')
     const data = await response.json()
 
     const players = data?.map(player => {
