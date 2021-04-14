@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import {Input} from '../components/Form/Input'
-import {Flex, Button, Stack} from '@chakra-ui/react'
+import {Flex, Button, Stack, Image, Box, Center} from '@chakra-ui/react'
+
 
 export default function SignIn() {
   return (
@@ -14,11 +15,17 @@ export default function SignIn() {
         as="form"
         width="100%"
         maxWidth={360}
-        bg="gray.800"
+        bg="white"
         p="8"
         borderRadius={8}
         flexDir="column"
+        color="gray.600"
       >
+        
+          <Center>
+            <Image src="/logo.png" alt="Game ASGP"/>
+          </Center> 
+        
         <Stack spacing="4">
           <Input type="email" name="email" label="E-mail" />
           <Input type="password" name="password" label="Senha" />   
@@ -27,7 +34,7 @@ export default function SignIn() {
         <Button
           type="submit"
           mt="6"
-          colorScheme="pink"
+          colorScheme="orange"
           size='lg'
         >
           Entrar

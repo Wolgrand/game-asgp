@@ -1,7 +1,25 @@
-import {Flex, Button,Box,Text, Stack, SimpleGrid, theme} from '@chakra-ui/react'
+import { GetServerSideProps } from "next"
+import {Flex, VStack,  Button,Box,Heading,Text, Stack, SimpleGrid, theme, Spinner} from '@chakra-ui/react'
 import dynamic from 'next/dynamic';
+import { Card } from '../components/Card';
 import {Header} from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
+import { api } from "../services/api";
+import { useQuery } from "react-query";
+import { Ref } from "faunadb";
+
+type Player = {
+  ref: {
+      id: string;
+  }
+  data: {
+    name: string,
+    image_url: string,
+    role: string,
+    score: number,
+    score_extract:[]
+  }
+}
 
 const  Chart = dynamic(() => import('react-apexcharts'), {
   ssr:false,
@@ -60,32 +78,51 @@ const series = [
 ];
 
 export default function Dashboard() {
+  const { data, isLoading, error} = useQuery('players', async () => {
+    const response = await fetch('http://localhost:3000/api/players')
+    const data = await response.json()
+
+    const players = data?.map(player => {
+      return {
+        id: player['ref']['@ref'].id,
+        name: player.data.name,
+        email: player.data.email,
+        image_url: player.data.image_url,
+        score: player.data.score,
+      };
+    })
+    return players.sort((a,b) => (a.name > b.name) ? 1 : -1);
+  })
+
+  
   return (
     <Flex direction="column" h="100vh">
       <Header />
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
         <Sidebar />
-        <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
-          <Box
-            p={["6", "8"]}
-            bg="gray.800"
-            borderRadius={8}
-            pb="4"
-          >
-            <Text>Inscrito da semana</Text>
-            <Chart options={options} series={series}type="area" height={160}/>
-          </Box>
-          <Box
-            p={["6", "8"]}
-            bg="gray.800"
-            borderRadius={8}
-            pb="4"
-          >
-            <Text>Taxa de abertura</Text>
-            <Chart options={options} series={series}type="area" height={160}/>
-          </Box>
+        <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start" mb="6">
+          <Stack spacing={4}>
+            <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
+              <Heading>Pontuação geral - Abril</Heading>
+            </SimpleGrid>
+            <SimpleGrid flex="1" gap="4" minChildWidth="480px" align="flex-start">
+                { isLoading ?
+                <Flex justify="center">
+                  <Spinner />
+                </Flex>
+              : error ? (
+                <Flex justify="center">
+                  <Text>Erro ao carregar os dados.</Text>
+                </Flex>
+              ) : (data.map(player=>(
+                <Card key={player.name} email={player.email} name={player.name} score={player.score}  image={player.image_url} />
+              ))) }  
+            </SimpleGrid>
+          </Stack>
         </SimpleGrid>
       </Flex>
     </Flex>
   )
 }
+
+
