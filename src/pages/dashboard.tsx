@@ -1,12 +1,12 @@
-import { GetServerSideProps } from "next"
-import {Flex, VStack,  Button,Box,Heading,Text, Stack, SimpleGrid, theme, Spinner} from '@chakra-ui/react'
+import {Flex, Avatar, CircularProgress, CircularProgressLabel, Link, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel} from '@chakra-ui/react'
 import dynamic from 'next/dynamic';
 import { Card } from '../components/Card';
 import {Header} from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
 import { api } from "../services/api";
 import { useQuery } from "react-query";
-import { Ref } from "faunadb";
+import React from 'react';
+import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 
 type Player = {
   ref: {
@@ -79,10 +79,9 @@ const series = [
 
 export default function Dashboard() {
   const { data, isLoading, error} = useQuery('players', async () => {
-    const response = await fetch('https://game-asgp.vercel.app/api/players')
-    const data = await response.json()
-
-    const players = data?.map(player => {
+    const response = await api.get('/players')
+    
+    const players = response.data?.map(player => {
       return {
         id: player['ref']['@ref'].id,
         name: player.data.name,
@@ -102,21 +101,72 @@ export default function Dashboard() {
         <Sidebar />
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start" mb="6">
           <Stack spacing={4}>
-            <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
+            {/* <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
               <Heading>Pontuação geral - Abril</Heading>
-            </SimpleGrid>
-            <SimpleGrid flex="1" gap="4" minChildWidth="480px" align="flex-start">
-                { isLoading ?
-                <Flex justify="center">
-                  <Spinner />
-                </Flex>
-              : error ? (
-                <Flex justify="center">
-                  <Text>Erro ao carregar os dados.</Text>
-                </Flex>
-              ) : (data.map(player=>(
-                <Card key={player.name} email={player.email} name={player.name} score={player.score}  image={player.image_url} />
-              ))) }  
+            </SimpleGrid> */}
+
+            <SimpleGrid>
+            <Box
+              flex="1"
+              borderRadius={8}
+              bg="white"
+              p="8"
+              shadow="md"
+            >
+              <Flex
+                mb="8"
+                justify="space-between"
+                align="center"
+              >
+                <Heading size="lg" fontWeight="normal" color="gray.600">Pontuação geral - Abril</Heading>
+
+                
+              </Flex>
+              <Table colorScheme="gray">
+                <Thead>
+                  <Tr>
+                    <Th>Jogador</Th>
+                    <Th>Pontuação</Th>
+                    <Th>Progresso Mês</Th>
+                    <Th>Recompensa</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  { isLoading ?
+                    <Flex justify="center">
+                      <Spinner />
+                    </Flex>
+                  : error ? (
+                    <Flex justify="center">
+                      <Text>Erro ao carregar os dados.</Text>
+                    </Flex>
+                  ) : (data.map(player=>(
+                    
+                  <Tr>
+                    <Td>
+                      <Flex flexDir="row" alignContent="center" align="center">
+                        <Avatar size="md" name={player.name} src={player.image_url}/>
+                        <Box ml="4" textAlign="left">
+                          <Text color="gray.700" fontWeight="bold">{player.name}</Text>
+                          <Text color="gray.300" fontSize="small">{player.email}</Text>
+                        </Box>
+                      </Flex>
+                    </Td>
+                    <Td>{player.score}</Td>
+                    <Td alignContent="center" justifyContent="center">
+                      <CircularProgress size="64px" flex="1" thickness="16"  min={0} max={320} value={player.score >= 320 ? 100 : (player.score/320)*100} color={player.score >= 320 ? "green" : "orange"}>
+                        <CircularProgressLabel textAlign="center" fontSize="sm" >{((player.score/320)*100).toLocaleString('pt-BR', { maximumFractionDigits: 0})}%</CircularProgressLabel>
+                      </CircularProgress>
+                    </Td>
+                    <Td>
+                      <Text as="span" color="gray.500" fontSize="16" >{120>= 1000 ? "Chocolate" : 120 >= 320 ? "habilitado" : "não habilitado"}</Text>
+                    </Td>
+                  </Tr>
+                  ))) } 
+                </Tbody>
+              </Table>
+              
+            </Box>
             </SimpleGrid>
           </Stack>
         </SimpleGrid>

@@ -1,9 +1,17 @@
 import Head from 'next/head'
 import {Input} from '../components/Form/Input'
 import {Flex, Button, Stack, Image, Box, Center} from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 
 export default function SignIn() {
+  const router = useRouter()
+  
+  useEffect(()=> {
+    router.push(`/dashboard`)
+      }, [])
+  
   return (
     <Flex
       w="100vw"
