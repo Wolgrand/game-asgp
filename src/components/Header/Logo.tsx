@@ -5,7 +5,7 @@ export default function Logo(){
     <Image
       src="/logo.png"
       borderRadius="full"
-      boxSize="48px"
+      boxSize="56px"
       mb="2"
     />
   )

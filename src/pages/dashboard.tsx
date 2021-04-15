@@ -1,4 +1,4 @@
-import {Flex, Avatar, CircularProgress, CircularProgressLabel, Link, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel} from '@chakra-ui/react'
+import {Flex, Avatar, CircularProgress, CircularProgressLabel, Badge, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel, Tag} from '@chakra-ui/react'
 import dynamic from 'next/dynamic';
 import { Card } from '../components/Card';
 import {Header} from '../components/Header'
@@ -142,7 +142,11 @@ export default function Dashboard() {
                     </Flex>
                   ) : (data.map(player=>(
                     
-                  <Tr>
+                  <Tr cursor="pointer" _hover={
+                    {shadow: "md",
+                      
+                    }
+                  }>
                     <Td>
                       <Flex flexDir="row" alignContent="center" align="center">
                         <Avatar size="md" name={player.name} src={player.image_url}/>
@@ -154,16 +158,18 @@ export default function Dashboard() {
                     </Td>
                     <Td>{player.score}</Td>
                     <Td alignContent="center" justifyContent="center">
-                      <CircularProgress size="64px" flex="1" thickness="16"  min={0} max={320} value={player.score >= 320 ? 100 : (player.score/320)*100} color={player.score >= 320 ? "green" : "orange"}>
+                      <CircularProgress size="64px" flex="1" thickness="16"  min={0} max={100} value={(player.score/320)*100} color={player.score >= 320 ? "green" : "orange"}>
                         <CircularProgressLabel textAlign="center" fontSize="sm" >{((player.score/320)*100).toLocaleString('pt-BR', { maximumFractionDigits: 0})}%</CircularProgressLabel>
                       </CircularProgress>
                     </Td>
                     <Td>
-                      <Text as="span" color="gray.500" fontSize="16" >{120>= 1000 ? "Chocolate" : 120 >= 320 ? "habilitado" : "não habilitado"}</Text>
+                    <Tag colorScheme={player.score >= 320 ? "green" : "gray"}>{player.score>= 1000 ? "Chocolate" : player.score >= 320 ? "habilitado" : "não habilitado"}</Tag>
+
+                      <Text as="span" color="gray.500" fontSize="16" ></Text>
                     </Td>
                   </Tr>
                   ))) } 
-                </Tbody>
+                </Tbody> 
               </Table>
               
             </Box>
