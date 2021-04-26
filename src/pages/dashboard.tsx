@@ -1,4 +1,4 @@
-import {Flex, Avatar, CircularProgress, CircularProgressLabel, Badge, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel, Tag} from '@chakra-ui/react'
+import {Flex, Avatar, Skeleton, SkeletonText, SkeletonCircle, CircularProgress, CircularProgressLabel, Badge, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel, Tag} from '@chakra-ui/react'
 import dynamic from 'next/dynamic';
 import { Card } from '../components/Card';
 import {Header} from '../components/Header'
@@ -93,7 +93,7 @@ export default function Dashboard() {
     return players.sort((a,b) => (a.name > b.name) ? 1 : -1);
   })
 
-  
+
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -119,8 +119,6 @@ export default function Dashboard() {
                 align="center"
               >
                 <Heading size="lg" fontWeight="normal" color="gray.600">Pontuação geral - Abril</Heading>
-
-                
               </Flex>
               <Table colorScheme="gray">
                 <Thead>
@@ -133,14 +131,33 @@ export default function Dashboard() {
                 </Thead>
                 <Tbody>
                   { isLoading ?
-                    <Flex justify="center">
-                      <Spinner />
-                    </Flex>
-                  : error ? (
-                    <Flex justify="center">
-                      <Text>Erro ao carregar os dados.</Text>
-                    </Flex>
-                  ) : (data.map(player=>(
+                    <>
+                    <Tr cursor="pointer" _hover={
+                      {shadow: "md",
+                        
+                      }
+                    }>
+                      <Td>
+                        <Flex flexDir="row" alignContent="center" align="center">
+                          <SkeletonCircle size="10" />
+                          <Box ml="4" textAlign="left">
+                            <Skeleton height="10px" />
+                            <Skeleton height="10px" />
+                          </Box>
+                        </Flex>
+                      </Td>
+                      <Td><Skeleton height="20px" /></Td>
+                      <Td alignContent="center" justifyContent="center">
+                        <SkeletonCircle size="10" />
+                      </Td>
+                      <Td>
+                        <Skeleton height="20px" />
+  
+                        <Text as="span" color="gray.500" fontSize="16" ></Text>
+                      </Td>
+                    </Tr>
+                    </>
+                  : data?.map(player=>(
                     
                   <Tr cursor="pointer" _hover={
                     {shadow: "md",
@@ -168,7 +185,7 @@ export default function Dashboard() {
                       <Text as="span" color="gray.500" fontSize="16" ></Text>
                     </Td>
                   </Tr>
-                  ))) } 
+                  )) } 
                 </Tbody> 
               </Table>
               

@@ -6,19 +6,19 @@ import NavLink from "./NavLink";
 import NavSection from "./NavSection";
 
 export default function SidebarNav(){
-  const { data, isLoading, error} = useQuery('players', async () => {
+  const { data, isLoading, error} = useQuery('solicitations', async () => {
     const response = await api.get('/solicitations/pending')
     
-    const players = response.data?.map(player => {
+    const pendingSolicitations = response.data?.map(solicitations => {
       return {
-        id: player['ref']['@ref'].id,
-        name: player.data.name,
-        email: player.data.email,
-        image_url: player.data.image_url,
-        score: player.data.score,
+        id: solicitations['ref']['@ref'].id,
+        name: solicitations.data.name,
+        email: solicitations.data.email,
+        image_url: solicitations.data.image_url,
+        score: solicitations.data.score,
       };
     })
-    return players
+    return pendingSolicitations
   })
   return(
     <Stack spacing="12" align="flex-start">
