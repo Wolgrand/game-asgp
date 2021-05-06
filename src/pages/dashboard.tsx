@@ -5,8 +5,9 @@ import {Header} from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
 import { api } from "../services/api";
 import { useQuery } from "react-query";
-import React from 'react';
+import React, { useContext } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
+import { AuthContext } from '../contexts/AuthContext';
 
 type Player = {
   ref: {

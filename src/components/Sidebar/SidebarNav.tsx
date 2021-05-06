@@ -26,10 +26,10 @@ export default function SidebarNav(){
         <NavLink icon={RiDashboardLine} href="/dashboard"> Dashboard </NavLink>
         {/* <NavLink icon={RiContactsLine} href="/users"> Usuários </NavLink> */}
       </NavSection>
-{/*       <NavSection title="ENTREGAS">
+      <NavSection title="ENTREGAS">
         <NavLink icon={RiErrorWarningLine} href="/solicitations"> Todas as solicitações </NavLink>
         <NavLink icon={RiSurveyLine} href="/solicitations/pending" tag={data?.length > 0 ? data?.length : "" }> Aguardando aprovação </NavLink>
-      </NavSection>h */}
+      </NavSection>h
     </Stack>
   )
 }

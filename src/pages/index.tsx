@@ -1,16 +1,28 @@
 import Head from 'next/head'
 import {Input} from '../components/Form/Input'
 import {Flex, Button, Stack, Image, Box, Center} from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { FormEvent, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { AuthContext } from '../contexts/AuthContext'
 
 
 export default function SignIn() {
   const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { signIn } = useContext(AuthContext)
   
-  useEffect(()=> {
-    router.push(`/dashboard`)
-      }, [])
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    const data = {
+      email,
+      password,
+    }
+
+    await signIn(data)
+  }
   
   return (
     <Flex
@@ -28,6 +40,7 @@ export default function SignIn() {
         borderRadius={8}
         flexDir="column"
         color="gray.600"
+        onSubmit={handleSubmit}
       >
         
           <Center>
@@ -35,8 +48,8 @@ export default function SignIn() {
           </Center> 
         
         <Stack spacing="4">
-          <Input type="email" name="email" label="E-mail" />
-          <Input type="password" name="password" label="Senha" />   
+          <Input type="email" value={email} name="email" label="E-mail" onChange={e => setEmail(e.target.value)} />
+          <Input type="password" value={password} name="password" label="Senha" onChange={e => setPassword(e.target.value)} />   
         </Stack>
         
         <Button
