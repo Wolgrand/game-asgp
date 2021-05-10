@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import {Header} from '../../components/Header'
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
-import { api } from '../../services/api';
+import { api } from '../../services/apiClient';
 import players from '../api/players';
 
 type Solicitation = {
@@ -15,8 +15,11 @@ type Solicitation = {
   score: number,
   month: string,
   status: string,
+  description: string,
   player: {
     id: string
+    name: string
+    image_url: string
     score: number
   },
 }
@@ -112,7 +115,7 @@ export default function UserList(){
                     <Flex justify="center">
                       <Text>Erro ao carregar os dados.</Text>
                     </Flex>
-                  ) : (data.map(solicitation=>(
+                  ) : (data?.map(solicitation=>(
                     
                     <Tr key={solicitation.id} cursor="pointer" _hover={
                       {shadow: "md",
@@ -121,7 +124,7 @@ export default function UserList(){
                     }>
                       <Td>
                         <Flex flexDir="row" alignContent="center" align="center">
-                          <Avatar size="md" name={solicitation.player.name} src={solicitation.player.image_url}/>
+                          <Avatar size="md" name={solicitation.player?.name} src={solicitation.player?.image_url}/>
                         </Flex>
                       </Td>
                       <Td>{solicitation.title}</Td>

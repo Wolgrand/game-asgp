@@ -10,6 +10,8 @@ import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 import { AuthContext } from '../contexts/AuthContext';
 import { withSSRAuth } from '../utils/withSSRAuth';
 import { setupApiClient } from '../services/api';
+import { AuthTokenError } from '../services/errors/AuthTokenError';
+import { destroyCookie } from 'nookies';
 
 type Player = {
   ref: {
@@ -206,6 +208,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   const response = await apiClient.get('/me')
 
   console.log(response.data)
+  
   return {
    props: {}
  }

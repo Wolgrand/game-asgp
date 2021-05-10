@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { parseCookies } from "nookies";
+import { destroyCookie, parseCookies } from "nookies";
+import { AuthTokenError } from "../services/errors/AuthTokenError";
 
 export function withSSRAuth<P>(fn:GetServerSideProps<P>) {
   return async (ctx: GetServerSidePropsContext):Promise<GetServerSidePropsResult<P>> => {
@@ -9,12 +10,29 @@ export function withSSRAuth<P>(fn:GetServerSideProps<P>) {
 
       return {
         redirect: {
-          destination: '/dashboard',
+          destination: '/',
           permanent:false,
         } 
       }
     }
+
+    try {
+      return await fn(ctx)
+    } catch (err) {
+
+      if(err instanceof AuthTokenError) {
+        destroyCookie(ctx, 'game-asgp.token')
+        destroyCookie(ctx, 'game-asgp.refreshToken')
+    
+        return {
+            redirect: {
+              destination: '/',
+              permanent:false,
+            } 
+          }
+
+      }
+    }
   
-    return await fn(ctx)
   }
 }
