@@ -3,7 +3,10 @@ import {Input} from '../components/Form/Input'
 import {Flex, Button, Stack, Image, Box, Center} from '@chakra-ui/react'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import {parseCookies} from 'nookies'
 import { AuthContext } from '../contexts/AuthContext'
+import { GetServerSideProps } from 'next'
+import { withSSRGuest } from '../utils/withSSRGuest'
 
 
 export default function SignIn() {
@@ -64,3 +67,9 @@ export default function SignIn() {
     </Flex>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+   return {
+    props: {}
+  }
+})

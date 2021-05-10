@@ -3,11 +3,13 @@ import dynamic from 'next/dynamic';
 import { Card } from '../components/Card';
 import {Header} from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { useQuery } from "react-query";
 import React, { useContext } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 import { AuthContext } from '../contexts/AuthContext';
+import { withSSRAuth } from '../utils/withSSRAuth';
+import { setupApiClient } from '../services/api';
 
 type Player = {
   ref: {
@@ -199,4 +201,13 @@ export default function Dashboard() {
   )
 }
 
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const apiClient = setupApiClient(ctx);
+  const response = await apiClient.get('/me')
+
+  console.log(response.data)
+  return {
+   props: {}
+ }
+})
 

@@ -1,7 +1,7 @@
 import { Stack, Tag } from "@chakra-ui/react";
 import { RiSurveyLine, RiDashboardLine, RiErrorWarningLine, RiGitMergeLine, RiInputMethodLine } from "react-icons/ri";
 import { useQuery } from "react-query";
-import { api } from "../../services/api";
+import { api } from "../../services/apiClient";
 import NavLink from "./NavLink";
 import NavSection from "./NavSection";
 
