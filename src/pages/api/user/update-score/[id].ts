@@ -34,13 +34,15 @@ export default async (req: NextApiRequest, res: NextApiResponse<any>) => {
       );
 
       const newScore = Number(player.data.score) + Number(score)
+
+      const olMonthScore = player.data.score_extract[month]
       
       await fauna.query(
         q.Update(q.Ref(q.Collection('users'), id), {
           data: {
             score: newScore,
             score_extract:{
-              [month]:Number(score)
+              [month]:Number(score) + Number(olMonthScore)
             }
           },
         })

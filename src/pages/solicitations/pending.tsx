@@ -70,6 +70,8 @@ export default function UserList(){
       month: solicitation.month
     })
 
+    console.log(solicitation.player.id, solicitation.score, solicitation.month )
+
     
   }
   function handleSolicitationRepproval(solicitation:Solicitation) {
