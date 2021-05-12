@@ -13,7 +13,7 @@ export function setupApiClient(ctx = undefined){
   let cookies = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_VERCEL_URL +'/api',
+    baseURL: '/api',
     headers: {
       Authorization: `Bearer ${cookies['game-asgp.token']}`
     }
