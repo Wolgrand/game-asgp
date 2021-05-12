@@ -76,7 +76,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       refreshToken,
       role: user.data.data.role,
       name: user.data.data.name,
-      id: user.data['ref']['@ref'].id,
+      id: user.data.ref.id,
       image_url: user.data.data.image_url,
     });
 
