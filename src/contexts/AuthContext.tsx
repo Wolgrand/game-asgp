@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 type User = {
   email: string,
+  id: string,
   role: string,
   name: string,
   image_url: string,
@@ -44,10 +45,11 @@ export function AuthProvider({ children }: AuthProviderprops) {
 
     if(token) {
       api.get('/me').then(response => {
-        const {email,role, name,image_url} = response.data
+        const {email,role, name,image_url, id} = response.data
         
         setUser({
           email,
+          id,
           role,
           name,
           image_url,
@@ -65,7 +67,7 @@ export function AuthProvider({ children }: AuthProviderprops) {
         password,
       })
 
-      const { token, refreshToken, role, name, image_url } = response.data;
+      const { token, refreshToken, role, name, image_url, id } = response.data;
 
       setCookie(undefined, 'game-asgp.token', token, {
         maxAge: 60 * 60 * 24 * 60, //1 day
@@ -81,6 +83,7 @@ export function AuthProvider({ children }: AuthProviderprops) {
         role,
         name,
         image_url,
+        id
       })
 
       api.defaults.headers['Authorization'] = `Bearer ${token}`

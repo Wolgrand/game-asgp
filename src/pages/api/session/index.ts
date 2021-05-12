@@ -9,7 +9,7 @@ import { CreateSessionDTO } from '../../../config/types';
 
 type UserResponse = {
   data: {
-    ref: string,
+    ref: {id:string},
     ts: string,
     data: {
       name: string,
@@ -65,16 +65,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { token, refreshToken } = await generateJwtAndRefreshToken(email, {
       role: user.data.data.role,
       name: user.data.data.name,
+      id: user.data.ref.id,
       image_url: user.data.data.image_url,
     })
 
-    console.log(refreshToken)
+    
 
     return res.status(200).json({
       token,
       refreshToken,
       role: user.data.data.role,
       name: user.data.data.name,
+      id: user.data['ref']['@ref'].id,
       image_url: user.data.data.image_url,
     });
 

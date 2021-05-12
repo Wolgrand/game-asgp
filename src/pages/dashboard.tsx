@@ -1,4 +1,4 @@
-import {Flex, Avatar, Skeleton, SkeletonText, SkeletonCircle, CircularProgress, CircularProgressLabel, Badge, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel, Tag} from '@chakra-ui/react'
+import {Flex, Select, Avatar, Skeleton, SkeletonText, SkeletonCircle, CircularProgress, CircularProgressLabel, Badge, Heading, Spinner, Icon, Table, Button,Box,Text, Stack, SimpleGrid, theme, Thead, Tr, Th, Checkbox, Tbody, Td, useBreakpointValue, ProgressLabel, Tag} from '@chakra-ui/react'
 import dynamic from 'next/dynamic';
 import { Card } from '../components/Card';
 import {Header} from '../components/Header'
@@ -12,6 +12,7 @@ import { withSSRAuth } from '../utils/withSSRAuth';
 import { setupApiClient } from '../services/api';
 import { AuthTokenError } from '../services/errors/AuthTokenError';
 import { destroyCookie } from 'nookies';
+import { useState } from 'react';
 
 type Player = {
   ref: {
@@ -22,7 +23,16 @@ type Player = {
     image_url: string,
     role: string,
     score: number,
-    score_extract:[]
+    score_extract:{
+      Abril: number,
+      Maio: number,
+      Junho: number,
+      Julho: number,
+      Agosto: number,
+      Setembro: number,
+      Outubro: number,
+      Novembro: number
+    }
   }
 }
 
@@ -83,6 +93,7 @@ const series = [
 ];
 
 export default function Dashboard() {
+  const [selectedMonth, setSelectedMonth] = useState('Maio')
   const { data, isLoading, error} = useQuery('players', async () => {
     const response = await api.get('/players')
     
@@ -91,6 +102,7 @@ export default function Dashboard() {
         id: player['ref']['@ref'].id,
         name: player.data.name,
         email: player.data.email,
+        score_extract: player.data.score_extract,
         image_url: player.data.image_url,
         score: player.data.score,
       };
@@ -123,13 +135,24 @@ export default function Dashboard() {
                 justify="space-between"
                 align="center"
               >
-                <Heading size="lg" fontWeight="normal" color="gray.600">Pontuação geral - Abril</Heading>
+                <Heading size="lg" fontWeight="normal" color="gray.600">Pontuação geral - {selectedMonth}</Heading>
+                <Select w="fit-content" placeholder="Selecione o mês de referência" onChange={e=> setSelectedMonth(e.target.value)}> 
+                  <option key={'Abril'} value={'Abril'}>Abril</option>  
+                  <option key={'Maio'} value={'Maio'}>Maio</option>  
+                  <option key={'Junho'} value={'Junho'}>Junho</option>  
+                  <option key={'Julho'} value={'Julho'}>Julho</option>  
+                  <option key={'Agosto'} value={'Agosto'}>Agosto</option>  
+                  <option key={'Setembro'} value={'Setembro'}>Setembro</option>  
+                  <option key={'Outubro'} value={'Outubro'}>Outubro</option>  
+                  <option key={'Novembro'} value={'Novembro'}>Novembro</option>  
+                </Select>
               </Flex>
               <Table colorScheme="gray">
                 <Thead>
                   <Tr>
                     <Th>Jogador</Th>
-                    <Th>Pontuação</Th>
+                    <Th>Pontuação total</Th>
+                    <Th>Pontuação no Mês</Th>
                     <Th>Progresso Mês</Th>
                     <Th>Recompensa</Th>
                   </Tr>
@@ -151,6 +174,57 @@ export default function Dashboard() {
                           </Box>
                         </Flex>
                       </Td>
+                      <Td><Skeleton height="20px" /></Td>
+                      <Td><Skeleton height="20px" /></Td>
+                      <Td alignContent="center" justifyContent="center">
+                        <SkeletonCircle size="10" />
+                      </Td>
+                      <Td>
+                        <Skeleton height="20px" />
+  
+                        <Text as="span" color="gray.500" fontSize="16" ></Text>
+                      </Td>
+                    </Tr>
+                    <Tr cursor="pointer" _hover={
+                      {shadow: "md",
+                        
+                      }
+                    }>
+                      <Td>
+                        <Flex flexDir="row" alignContent="center" align="center">
+                          <SkeletonCircle size="10" />
+                          <Box ml="4" textAlign="left">
+                            <Skeleton height="10px" />
+                            <Skeleton height="10px" />
+                          </Box>
+                        </Flex>
+                      </Td>
+                      <Td><Skeleton height="20px" /></Td>
+                      <Td><Skeleton height="20px" /></Td>
+                      <Td alignContent="center" justifyContent="center">
+                        <SkeletonCircle size="10" />
+                      </Td>
+                      <Td>
+                        <Skeleton height="20px" />
+  
+                        <Text as="span" color="gray.500" fontSize="16" ></Text>
+                      </Td>
+                    </Tr>
+                    <Tr cursor="pointer" _hover={
+                      {shadow: "md",
+                        
+                      }
+                    }>
+                      <Td>
+                        <Flex flexDir="row" alignContent="center" align="center">
+                          <SkeletonCircle size="10" />
+                          <Box ml="4" textAlign="left">
+                            <Skeleton height="10px" />
+                            <Skeleton height="10px" />
+                          </Box>
+                        </Flex>
+                      </Td>
+                      <Td><Skeleton height="20px" /></Td>
                       <Td><Skeleton height="20px" /></Td>
                       <Td alignContent="center" justifyContent="center">
                         <SkeletonCircle size="10" />
@@ -179,13 +253,14 @@ export default function Dashboard() {
                       </Flex>
                     </Td>
                     <Td>{player.score}</Td>
+                    <Td>{player.score_extract[selectedMonth]}</Td>
                     <Td alignContent="center" justifyContent="center">
-                      <CircularProgress size="64px" flex="1" thickness="16"  min={0} max={100} value={(player.score/320)*100} color={player.score >= 320 ? "green" : "orange"}>
-                        <CircularProgressLabel textAlign="center" fontSize="sm" >{((player.score/320)*100).toLocaleString('pt-BR', { maximumFractionDigits: 0})}%</CircularProgressLabel>
+                      <CircularProgress size="64px" flex="1" thickness="16"  min={0} max={100} value={(player.score_extract[selectedMonth]/320)*100} color={player.score_extract[selectedMonth] >= 320 ? "green" : "orange"}>
+                        <CircularProgressLabel textAlign="center" fontSize="sm" >{((player.score_extract[selectedMonth]/320)*100).toLocaleString('pt-BR', { maximumFractionDigits: 0})}%</CircularProgressLabel>
                       </CircularProgress>
                     </Td>
                     <Td>
-                    <Tag colorScheme={player.score >= 320 ? "green" : "gray"}>{player.score>= 1000 ? "Chocolate" : player.score >= 320 ? "habilitado" : "não habilitado"}</Tag>
+                    <Tag colorScheme={player.score_extract[selectedMonth] >= 320 ? "green" : "gray"}>{player.score_extract[selectedMonth]>= 1000 ? "Chocolate" : player.score_extract[selectedMonth] >= 320 ? "habilitado" : "não habilitado"}</Tag>
 
                       <Text as="span" color="gray.500" fontSize="16" ></Text>
                     </Td>
@@ -207,7 +282,6 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   const apiClient = setupApiClient(ctx);
   const response = await apiClient.get('/me')
 
-  console.log(response.data)
   
   return {
    props: {}

@@ -30,9 +30,9 @@ export default function SidebarNav(){
         {/* <NavLink icon={RiContactsLine} href="/users"> Usuários </NavLink> */}
       </NavSection>
       <NavSection title="ENTREGAS">
-        {user.role === 'admin' && <NavLink icon={RiErrorWarningLine} href="/solicitations"> Todas as solicitações </NavLink>}
+        {user?.role === 'admin' && <NavLink icon={RiErrorWarningLine} href="/solicitations"> Todas as solicitações </NavLink>}
         <NavLink icon={RiSurveyLine} href="/solicitations/my-solicitations"> Minhas solicitações </NavLink>
-        {user.role === 'admin' && <NavLink icon={RiSurveyLine} href="/solicitations/pending" tag={data?.length > 0 ? data?.length : "" }> Aguardando aprovação </NavLink>}
+        {user?.role === 'admin' && <NavLink icon={RiSurveyLine} href="/solicitations/pending" tag={data?.length > 0 ? data?.length : "" }> Aguardando aprovação </NavLink>}
         
       </NavSection>h
     </Stack>

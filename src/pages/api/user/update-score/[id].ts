@@ -24,9 +24,9 @@ export default async (req: NextApiRequest, res: NextApiResponse<any>) => {
       query: { id },
     } = req;
   
-    const { score } = req.body;
+    const { score, month } = req.body;
 
-    console.log(score)
+    console.log(id)
   
     try {
       const player = await fauna.query<Player>(
@@ -39,6 +39,9 @@ export default async (req: NextApiRequest, res: NextApiResponse<any>) => {
         q.Update(q.Ref(q.Collection('users'), id), {
           data: {
             score: newScore,
+            score_extract:{
+              [month]:Number(score)
+            }
           },
         })
       );

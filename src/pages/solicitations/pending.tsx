@@ -27,20 +27,21 @@ type Solicitation = {
 
 export default function UserList(){
   const toast = useToast()
-  const { data, isLoading, error} = useQuery('solicitations', async () => {
+  const { data, isLoading, error} = useQuery('pendingSolicitations', async () => {
     const response = await api.get('/solicitations/pending')
     
-    const solicitations = response.data?.map(solicitation => {
+    const pendingSolicitations = response.data?.map(pendingSolicitation => {
       return {
-        id: solicitation['ref']['@ref'].id,
-        title: solicitation.data.title,
-        score: solicitation.data.score,
-        month: solicitation.data.month,
-        status: solicitation.data.status,
-        player: solicitation.data.player,
+        id: pendingSolicitation['ref']['@ref'].id,
+        title: pendingSolicitation.data.title,
+        score: pendingSolicitation.data.score,
+        month: pendingSolicitation.data.month,
+        description: pendingSolicitation.data.description,
+        status: pendingSolicitation.data.status,
+        player: pendingSolicitation.data.player,
       };
     })
-    return solicitations.sort((a,b) => (a.month > b.month) ? 1 : -1);
+    return pendingSolicitations.sort((a,b) => (a.month > b.month) ? 1 : -1);
   })
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -60,10 +61,13 @@ export default function UserList(){
       isClosable: true,
     })
 
-    console.log(solicitation.player)
+    console.log(solicitation)
+
+
 
     api.put(`/user/update-score/${solicitation.player.id}`, {
-      score: solicitation.score
+      score: solicitation.score,
+      month: solicitation.month
     })
 
     
@@ -127,7 +131,14 @@ export default function UserList(){
                           <Avatar size="md" name={solicitation.player?.name} src={solicitation.player?.image_url}/>
                         </Flex>
                       </Td>
-                      <Td>{solicitation.title}</Td>
+                      <Td>
+                      <Td>
+                        <Box flexDir="row">
+                          <Text fontSize="smaller" mb="2" fontWeight="bold">{solicitation.title}</Text>                  
+                          <Text >{solicitation.description}</Text>                  
+                        </Box>
+                      </Td>
+                      </Td>
                       <Td textAlign="center">{solicitation.score}</Td>
                       <Td alignContent="center" justifyContent="center">
                       {solicitation.month}

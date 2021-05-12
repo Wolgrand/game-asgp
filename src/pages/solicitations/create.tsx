@@ -1,5 +1,6 @@
 import {Flex, Box, Textarea, Heading, Divider, VStack, SimpleGrid, HStack, Button, Select, useToast} from '@chakra-ui/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { FormEvent, useContext, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Input } from '../../components/Form/Input';
@@ -18,6 +19,7 @@ interface Goal {
 export default function CreateU(){
   const [goal, setGoal] = useState({})
   const toast = useToast()
+  const router = useRouter()
   const { user } = useContext(AuthContext)
   const [description, setDescription] = useState("")
   const [month, setMonth] = useState("")
@@ -62,8 +64,8 @@ export default function CreateU(){
       isClosable: true,
     }))
     
-  
-  
+    router.push('/solicitations/my-solicitations')
+
     return;
   }
   

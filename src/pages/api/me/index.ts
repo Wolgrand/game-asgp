@@ -9,7 +9,9 @@ import { DecodedToken } from '../../../config/types';
 
 type UserResponse = {
   data: {
-    ref: string,
+    ref: {
+        id: string
+    },
     ts: string,
     data: {
       name: string,
@@ -87,6 +89,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       score:user.data.data.score, 
       email:user.data.data.email,
       role: user.data.data.role,
+      id: user.data.ref.id,
       name: user.data.data.name,
       image_url: user.data.data.image_url,
     });

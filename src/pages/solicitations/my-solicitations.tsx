@@ -28,26 +28,28 @@ interface Solicitation {
 
 export default function PendingSolicitationList(){
   
-  const { data, isLoading, error} = useQuery('solicitations', async () => {
+  const { data, isLoading, error} = useQuery('mySolicitations', async () => {
     const response = await api.get<Solicitation[]>(`/solicitations/my-solicitations`)
     
-    const solicitations = response.data?.map(solicitation => {
+    const mySolicitations = response.data?.map(mySolicitation => {
       return {
-        id: solicitation['ref']['@ref'].id,
-        title: solicitation.data.title,
-        score: solicitation.data.score,
-        month: solicitation.data.month,
-        description: solicitation.data.description,
-        status: solicitation.data.status,
-        player: solicitation.data.player,
+        id: mySolicitation['ref']['@ref'].id,
+        title: mySolicitation.data.title,
+        score: mySolicitation.data.score,
+        month: mySolicitation.data.month,
+        description: mySolicitation.data.description,
+        status: mySolicitation.data.status,
+        player: mySolicitation.data.player,
       };
     })
-    return solicitations.sort((a,b) => (a.month > b.month) ? 1 : -1);
+    return mySolicitations.sort((a,b) => (a.month > b.month) ? 1 : -1);
   })
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   })
+
+
 
   return (
     <Box>
@@ -112,7 +114,12 @@ export default function PendingSolicitationList(){
                           <Avatar size="md" name={solicitation.player?.name} src={solicitation.player?.image_url}/>
                         </Flex>
                       </Td>
-                      <Td>{solicitation.title}</Td>
+                      <Td>
+                        <Box flexDir="row">
+                          <Text fontSize="smaller" mb="2" fontWeight="bold">{solicitation.title}</Text>                  
+                          <Text >{solicitation.description}</Text>                  
+                        </Box>
+                      </Td>
                       <Td textAlign="center">{solicitation.score}</Td>
                       <Td alignContent="center" justifyContent="center">
                       {solicitation.month}
