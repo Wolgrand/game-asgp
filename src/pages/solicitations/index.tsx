@@ -7,6 +7,7 @@ import {Header} from '../../components/Header'
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
 import { api } from '../../services/apiClient';
+import { withSSRAuth } from '../../utils/withSSRAuth';
 
 export default function PendingSolicitationList(){
   const { data, isLoading, error} = useQuery('all_solicitations', async () => {
@@ -106,3 +107,13 @@ export default function PendingSolicitationList(){
     </Box>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  //const apiClient = setupApiClient(ctx);
+  //const response = await apiClient.get('/me')
+
+  
+  return {
+   props: {}
+ }
+})

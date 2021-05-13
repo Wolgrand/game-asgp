@@ -7,6 +7,7 @@ import {Header} from '../../components/Header'
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
 import { api } from '../../services/apiClient';
+import { withSSRAuth } from '../../utils/withSSRAuth';
 import players from '../api/players';
 
 type Solicitation = {
@@ -184,3 +185,13 @@ export default function UserList(){
     </Box>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  //const apiClient = setupApiClient(ctx);
+  //const response = await apiClient.get('/me')
+
+  
+  return {
+   props: {}
+ }
+})

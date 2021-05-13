@@ -4,6 +4,7 @@ import { fauna } from "../../../services/fauna";
 import { generateJwtAndRefreshToken } from '../../../services/auth';
 
 import { CreateSessionDTO } from '../../../config/types';
+import { compareHash } from "../../../utils/BCryptHashProvider";
 
 
 
@@ -29,6 +30,14 @@ type UserResponse = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if(req.method === 'POST'){
     const { email, password } = req.body as CreateSessionDTO;
+
+    if (
+      !email ||
+      !password
+      ) {
+      res.status(400).json({ error: 'Missing body parameter' });
+      return;
+    }
     
 
     const user = await fauna.query<UserResponse>(
@@ -52,8 +61,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
 
     
+    const passwordMatched = compareHash(password, user.data.data.password);
 
-    if (!user || password !== user.data.data.password) {
+    if (!passwordMatched) {
       return res
         .status(401)
         .json({ 
@@ -61,6 +71,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           message: 'E-mail or password incorrect.'
         });
     }
+
+
+
+
 
     const { token, refreshToken } = await generateJwtAndRefreshToken(email, {
       role: user.data.data.role,
