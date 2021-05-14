@@ -134,13 +134,13 @@ export default function UserList(){
                           <Avatar size="md" name={solicitation.player?.name} src={solicitation.player?.image_url}/>
                         </Flex>
                       </Td>
-                      <Td>
+
                       <Td>
                         <Box flexDir="row">
                           <Text fontSize="smaller" mb="2" fontWeight="bold">{solicitation.title}</Text>                  
                           <Text >{solicitation.description}</Text>                  
                         </Box>
-                      </Td>
+
                       </Td>
                       <Td textAlign="center">{solicitation.score}</Td>
                       <Td alignContent="center" justifyContent="center">
