@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Solicitation[] |
       const {name, email} = solicitation.data.player
       const {title, score, month} = solicitation.data
 
-      const emailSubject = `[Game-ASGP] - A sua solicitação de pontuação foi ${status === 'Aprovado' ? 'aprovada!' : 'reprovada!'}`
+      const emailSubject = `A sua solicitação de pontuação foi ${status === 'Aprovado' ? 'aprovada!' : 'reprovada!'}`
       const emailBody = `<strong>Olá, ${name}</strong>
       <p>A sua solicitação de registro de pontuação abaixo foi ${status === 'Aprovado' ? 'aprovada!' : 'reprovada!'}:</p>
       <p>
