@@ -1,16 +1,8 @@
-import nodemailer from 'nodemailer'
+import sendgrid from '@sendgrid/mail'
 
-const transporter = nodemailer.createTransport({ // Configura os parâmetros de conexão com servidor.
-  host: 'smtp.umbler.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: 'game-asgp@wowstudios.com.br',
-    pass: process.env.EMAIL_SERVICE_PASS
-  }
-})
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
-export function sendEmail(to: string, subject: string, body:string) {
+export async function sendEmail(to: string, subject: string, body:string) {
 
   const text = `
   <div style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-heigth:1.6; color:#222; max-width: 600px">
@@ -20,21 +12,21 @@ export function sendEmail(to: string, subject: string, body:string) {
     Equipe Game ASGP
   </div>`
 
-  const emailData = {
+  const msg = {
     from: 'Game ASGP <game-asgp@wowstudios.com.br>',
     to,
     subject,
     html: text,
   }
 
-
-
-  transporter.sendMail(emailData, (err, info) => { // Função que, efetivamente, envia o email.
-    if (err) {
-      return console.log(err)
-    }
-    
-    console.log(info)
+  sendgrid.send(msg)
+  .then(() => {
+    console.log('Email sent')
   })
+  .catch((error) => {
+    console.error(error)
+  })
+
+  
 
 }

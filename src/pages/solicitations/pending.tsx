@@ -62,7 +62,7 @@ export default function UserList(){
       isClosable: true,
     })
 
-    console.log(solicitation)
+    
 
 
 
@@ -71,7 +71,7 @@ export default function UserList(){
       month: solicitation.month
     })
 
-    console.log(solicitation.player.id, solicitation.score, solicitation.month )
+    
 
     
   }
