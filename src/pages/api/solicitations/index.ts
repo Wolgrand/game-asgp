@@ -24,15 +24,16 @@ export default async (req: NextApiRequest, res: NextApiResponse<Solicitation[] |
     try {
       const solicitations = await fauna.query<Solicitation>(
         q.Map(
-          // iterate each item in result
           q.Paginate(
-            // make paginatable
             q.Match(
-              // query index
-              q.Index('all_solicitations') // specify source
+              q.Index('solicitations_by_status'),
+              'Aprovado'
             )
           ),
-          (ref) => q.Get(ref) // lookup each result by its reference
+          q.Lambda("X",
+          q.Get(
+            q.Var("X")
+          ))
         )
       );
       // ok
