@@ -93,7 +93,7 @@ const series = [
 ];
 
 export default function Dashboard() {
-  const [selectedMonth, setSelectedMonth] = useState('Maio')
+  const [selectedMonth, setSelectedMonth] = useState('Agosto')
   const { data, isLoading, error} = useQuery('players', async () => {
     const response = await api.get('/players')
     
