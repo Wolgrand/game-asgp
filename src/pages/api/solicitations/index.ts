@@ -25,15 +25,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<Solicitation[] |
       const solicitations = await fauna.query<Solicitation>(
         q.Map(
           q.Paginate(
-            q.Match(
-              q.Index('solicitations_by_status'),
-              'Aprovado'
+            q.Documents(
+              q.Collection('solicitations')
             )
           ),
-          q.Lambda("X",
-          q.Get(
-            q.Var("X")
-          ))
+          q.Lambda((solicitation) => q.Get(solicitation))
         )
       );
       // ok
