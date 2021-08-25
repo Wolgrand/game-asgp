@@ -27,7 +27,8 @@ export default async (req: NextApiRequest, res: NextApiResponse<Solicitation[] |
           q.Paginate(
             q.Documents(
               q.Collection('solicitations')
-            )
+            ),
+            {size: 2000}
           ),
           q.Lambda((solicitation) => q.Get(solicitation))
         )
