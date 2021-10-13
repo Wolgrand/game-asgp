@@ -44,7 +44,8 @@ export default async (req: NextApiRequest, res: NextApiResponse<Solicitation[] |
             q.Match(
               q.Index('solicitations_by_Email'),
               decoded.sub
-            )
+            ),
+            {size: 2000}
           ),
           q.Lambda("X",
           q.Get(
