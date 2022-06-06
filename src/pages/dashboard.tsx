@@ -93,7 +93,7 @@ const series = [
 ];
 
 export default function Dashboard() {
-  const [selectedMonth, setSelectedMonth] = useState('Novembro')
+  const [selectedMonth, setSelectedMonth] = useState('Junho')
   const { data, isLoading, error} = useQuery('players', async () => {
     const response = await api.get('/players')
     
@@ -137,7 +137,6 @@ export default function Dashboard() {
               >
                 <Heading size="lg" fontWeight="normal" color="gray.600">Pontuação geral - {selectedMonth}</Heading>
                 <Select w="fit-content" placeholder="Selecione o mês de referência" onChange={e=> setSelectedMonth(e.target.value)}> 
-                  <option key={'Abril'} value={'Abril'}>Abril</option>  
                   <option key={'Maio'} value={'Maio'}>Maio</option>  
                   <option key={'Junho'} value={'Junho'}>Junho</option>  
                   <option key={'Julho'} value={'Julho'}>Julho</option>  
